@@ -37,10 +37,13 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          cp data.json /tmp/data.json
+          git fetch origin main
+          git reset --hard origin/main
+          cp /tmp/data.json data.json
           git add data.json
           git diff --staged --quiet && exit 0
           git commit -m "날씨 갱신 $(date -u +'%Y-%m-%d')"
-          git pull --rebase
           git push
 
       - name: Pages 아티팩트 업로드
