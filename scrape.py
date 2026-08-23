@@ -1,221 +1,170 @@
 #!/usr/bin/env python3
 """
-AccuWeather 홍천군 월별 예보를 긁어 data.json 으로 저장한다.
+홍천군 10월·11월 날씨 데이터를 Open-Meteo 에서 받아 data.json 으로 저장한다.
 
-AccuWeather 는 데이터센터 IP(GitHub Actions 등)를 차단하는 경우가 많아
-세 가지 경로를 순서대로 시도한다:
-  1) 직접 HTTP 요청
-  2) r.jina.ai 텍스트 리더 프록시
-  3) Playwright 실제 브라우저
+- 예보 범위(오늘부터 16일) 안의 날짜 → 실제 예보
+- 그 밖의 날짜 → 과거 10년(2015~2025) 같은 날짜의 평균값
+
+Open-Meteo 는 무료 공개 API 로 키가 필요 없고 접속 차단도 없다.
 """
 
 import json
-import re
-import sys
-from datetime import datetime, timezone, timedelta
+from collections import defaultdict
+from datetime import date, datetime, timezone, timedelta
 
 import requests
 
 KST = timezone(timedelta(hours=9))
 
-MONTHS = [
-    {
-        "key": "2026-10",
-        "year": 2026,
-        "month": 10,
-        "url": "https://www.accuweather.com/ko/kr/hongcheon-gun/223564/october-weather/223564?year=2026",
-    },
-    {
-        "key": "2026-11",
-        "year": 2026,
-        "month": 11,
-        "url": "https://www.accuweather.com/ko/kr/hongcheon-gun/223564/november-weather/223564?year=2026",
-    },
-]
+# 홍천군 좌표
+LAT, LON = 37.6971, 127.8889
 
-UA = (
-    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 "
-    "(KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36"
-)
-HEADERS = {
-    "User-Agent": UA,
-    "Accept-Language": "ko-KR,ko;q=0.9,en;q=0.8",
-    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-    "Upgrade-Insecure-Requests": "1",
+TARGET_MONTHS = [(2026, 10), (2026, 11)]
+
+# 평년값 계산에 쓸 과거 연도 범위
+HIST_START, HIST_END = 2015, 2025
+
+FORECAST_URL = "https://api.open-meteo.com/v1/forecast"
+ARCHIVE_URL = "https://archive-api.open-meteo.com/v1/archive"
+
+# WMO weather code → 한국어
+WMO = {
+    0: "맑음", 1: "대체로 맑음", 2: "약간 흐림", 3: "흐림",
+    45: "안개", 48: "짙은 안개",
+    51: "약한 이슬비", 53: "이슬비", 55: "강한 이슬비",
+    56: "언 이슬비", 57: "강한 언 이슬비",
+    61: "약한 비", 63: "비", 65: "강한 비",
+    66: "언 비", 67: "강한 언 비",
+    71: "약한 눈", 73: "눈", 75: "강한 눈", 77: "싸락눈",
+    80: "소나기", 81: "소나기", 82: "강한 소나기",
+    85: "눈 소나기", 86: "강한 눈 소나기",
+    95: "뇌우", 96: "우박 동반 뇌우", 99: "강한 우박 동반 뇌우",
 }
 
-# "[27 점차 흐려짐 75° 54°](...day=36)" 또는 "[23 기록 평균52°38°](...)" 둘 다 잡는다.
-DAY_RE = re.compile(
-    r"\[\s*(\d{1,2})\s*(.*?)\s*(-?\d+)\s*°\s*(-?\d+)\s*°\s*\]\([^)]*?day=(\d+)\)",
-    re.S,
-)
-# HTML 경로용
-PANEL_RE = re.compile(
-    r'<a[^>]*class="[^"]*monthly-daypanel[^"]*"[^>]*>(.*?)</a>', re.S | re.I
-)
-TAGS_RE = re.compile(r"<[^>]+>")
+
+def get_json(url, params):
+    r = requests.get(url, params=params, timeout=60)
+    r.raise_for_status()
+    return r.json()
 
 
-def f_to_c(f: float) -> int:
-    return round((f - 32) * 5 / 9)
-
-
-# ---------------------------------------------------------------- 수집 경로
-
-
-def try_direct(url: str):
-    try:
-        r = requests.get(url, headers=HEADERS, timeout=30)
-        if r.status_code == 200 and "monthly-daypanel" in r.text:
-            print("  ✓ 직접 요청 성공")
-            return html_to_markdownish(r.text)
-        print(f"  · 직접 요청 무응답 (status={r.status_code})")
-    except Exception as e:  # noqa: BLE001
-        print(f"  · 직접 요청 실패: {type(e).__name__}")
-    return None
-
-
-def try_jina(url: str):
-    """r.jina.ai 가 페이지를 대신 열어 마크다운 텍스트로 돌려준다."""
-    proxied = "https://r.jina.ai/" + url
-    try:
-        r = requests.get(
-            proxied,
-            headers={"User-Agent": UA, "Accept": "text/plain", "X-Return-Format": "markdown"},
-            timeout=90,
-        )
-        if r.status_code == 200 and "day=" in r.text:
-            print("  ✓ 리더 프록시 성공")
-            return r.text
-        print(f"  · 리더 프록시 무응답 (status={r.status_code})")
-    except Exception as e:  # noqa: BLE001
-        print(f"  · 리더 프록시 실패: {type(e).__name__}")
-    return None
-
-
-def try_playwright(url: str):
-    try:
-        from playwright.sync_api import sync_playwright
-    except ImportError:
-        print("  · Playwright 미설치, 건너뜀")
-        return None
-
-    try:
-        with sync_playwright() as p:
-            browser = p.chromium.launch(
-                args=["--disable-blink-features=AutomationControlled", "--no-sandbox"]
-            )
-            ctx = browser.new_context(
-                user_agent=UA, locale="ko-KR", viewport={"width": 1366, "height": 900}
-            )
-            page = ctx.new_page()
-            page.goto(url, wait_until="domcontentloaded", timeout=90000)
-            page.wait_for_selector(".monthly-daypanel", timeout=45000)
-            html = page.content()
-            browser.close()
-            print("  ✓ 브라우저 성공")
-            return html_to_markdownish(html)
-    except Exception as e:  # noqa: BLE001
-        print(f"  · 브라우저 실패: {type(e).__name__}")
-    return None
-
-
-def html_to_markdownish(html: str) -> str:
-    """HTML 의 day 패널들을 프록시 결과와 같은 '[날짜 설명 최고° 최저°](...day=N)' 형태로 정규화."""
-    out = []
-    for inner in PANEL_RE.findall(html):
-        href = ""
-        m = re.search(r'day=(\d+)', inner)
-        text = TAGS_RE.sub(" ", inner)
-        text = re.sub(r"\s+", " ", text).strip()
-        # 원본 <a> 의 href 에서 day 를 찾기 위해 패널 전체를 다시 훑는다
-        out.append(f"[{text}](x?day={m.group(1) if m else 0})")
-    if not out:
-        # href 가 <a> 태그 속성에 있는 일반적인 경우
-        for m in re.finditer(
-            r'<a[^>]*href="([^"]*day=(\d+))"[^>]*class="[^"]*monthly-daypanel[^"]*"[^>]*>(.*?)</a>',
-            html,
-            re.S | re.I,
-        ):
-            text = re.sub(r"\s+", " ", TAGS_RE.sub(" ", m.group(3))).strip()
-            out.append(f"[{text}](x?day={m.group(2)})")
-    return "\n".join(out)
-
-
-def fetch(url: str) -> str:
-    for fn in (try_direct, try_jina, try_playwright):
-        content = fn(url)
-        if content and DAY_RE.search(content):
-            return content
-    raise RuntimeError(
-        "세 경로 모두 실패했습니다. AccuWeather 가 차단 중이거나 페이지 구조가 바뀌었습니다."
+def fetch_forecast():
+    """오늘부터 16일치 예보. {(month, day): {...}} 로 반환."""
+    data = get_json(
+        FORECAST_URL,
+        {
+            "latitude": LAT,
+            "longitude": LON,
+            "daily": "weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max",
+            "timezone": "Asia/Seoul",
+            "forecast_days": 16,
+        },
     )
+    daily = data["daily"]
+    out = {}
+    for i, iso in enumerate(daily["time"]):
+        d = date.fromisoformat(iso)
+        code = daily["weather_code"][i]
+        hi = daily["temperature_2m_max"][i]
+        lo = daily["temperature_2m_min"][i]
+        pop = daily.get("precipitation_probability_max", [None] * 99)[i]
+        if hi is None or lo is None:
+            continue
+        out[(d.year, d.month, d.day)] = {
+            "desc": WMO.get(code, "—"),
+            "hi": round(hi),
+            "lo": round(lo),
+            "pop": pop,
+            "historical": False,
+        }
+    print(f"예보 {len(out)}일 수신")
+    return out
 
 
-# ---------------------------------------------------------------- 파싱
+def fetch_normals():
+    """과거 연도들의 10~11월 기록으로 날짜별 평균 계산."""
+    data = get_json(
+        ARCHIVE_URL,
+        {
+            "latitude": LAT,
+            "longitude": LON,
+            "start_date": f"{HIST_START}-10-01",
+            "end_date": f"{HIST_END}-11-30",
+            "daily": "temperature_2m_max,temperature_2m_min,precipitation_sum",
+            "timezone": "Asia/Seoul",
+        },
+    )
+    daily = data["daily"]
+    buckets = defaultdict(lambda: {"hi": [], "lo": [], "wet": []})
+
+    for i, iso in enumerate(daily["time"]):
+        d = date.fromisoformat(iso)
+        if d.month not in (10, 11):
+            continue
+        hi = daily["temperature_2m_max"][i]
+        lo = daily["temperature_2m_min"][i]
+        pr = daily["precipitation_sum"][i]
+        if hi is None or lo is None:
+            continue
+        b = buckets[(d.month, d.day)]
+        b["hi"].append(hi)
+        b["lo"].append(lo)
+        if pr is not None:
+            b["wet"].append(1 if pr >= 1.0 else 0)
+
+    out = {}
+    for key, b in buckets.items():
+        wet_rate = round(100 * sum(b["wet"]) / len(b["wet"])) if b["wet"] else None
+        out[key] = {
+            "desc": "평년값",
+            "hi": round(sum(b["hi"]) / len(b["hi"])),
+            "lo": round(sum(b["lo"]) / len(b["lo"])),
+            "pop": wet_rate,
+            "historical": True,
+        }
+    print(f"평년값 {len(out)}일 계산 ({HIST_START}~{HIST_END})")
+    return out
 
 
-def parse_month(content: str):
-    matches = DAY_RE.findall(content)
-    if not matches:
-        raise RuntimeError("날짜 항목을 찾지 못했습니다.")
-
-    days = []
-    seen_first = False
-    for dnum, desc, hi_f, lo_f, _idx in matches:
-        dnum = int(dnum)
-        desc = re.sub(r"\s+", " ", desc).strip()
-
-        if dnum == 1:
-            if seen_first:
-                break  # 다음 달 영역
-            seen_first = True
-        if not seen_first:
-            continue  # 이전 달 꼬리
-
-        historical = ("기록" in desc) or ("평균" in desc) or not desc
-        days.append(
-            {
-                "day": dnum,
-                "desc": desc or "기록 평균",
-                "hi": f_to_c(int(hi_f)),
-                "lo": f_to_c(int(lo_f)),
-                "historical": historical,
-            }
-        )
-
-    if not days:
-        raise RuntimeError("해당 월의 날짜를 하나도 추출하지 못했습니다.")
-    return days
-
-
-# ---------------------------------------------------------------- 실행
+def days_in_month(year, month):
+    if month == 12:
+        nxt = date(year + 1, 1, 1)
+    else:
+        nxt = date(year, month + 1, 1)
+    return (nxt - date(year, month, 1)).days
 
 
 def main():
+    forecast = fetch_forecast()
+    normals = fetch_normals()
+
     out = {
         "location": "홍천군, 강원도",
-        "source": "AccuWeather",
+        "source": "Open-Meteo (예보 16일 + 2015~2025 평년값)",
         "updatedAt": datetime.now(KST).isoformat(timespec="minutes"),
         "months": [],
     }
 
-    for cfg in MONTHS:
-        print(f"가져오는 중: {cfg['key']}")
-        content = fetch(cfg["url"])
-        days = parse_month(content)
-        first_weekday = datetime(cfg["year"], cfg["month"], 1).weekday()  # 월=0
+    for year, month in TARGET_MONTHS:
+        days = []
+        for dnum in range(1, days_in_month(year, month) + 1):
+            rec = forecast.get((year, month, dnum)) or normals.get((month, dnum))
+            if rec is None:
+                continue
+            days.append({"day": dnum, **rec})
+
+        first_weekday = date(year, month, 1).weekday()  # 월=0
         out["months"].append(
             {
-                "key": cfg["key"],
-                "year": cfg["year"],
-                "month": cfg["month"],
-                "url": cfg["url"],
+                "key": f"{year}-{month:02d}",
+                "year": year,
+                "month": month,
                 "leadingBlanks": (first_weekday + 1) % 7,  # 일요일 시작 달력
                 "days": days,
             }
         )
-        print(f"  → {len(days)}일 수집")
+        real = sum(1 for d in days if not d["historical"])
+        print(f"{year}-{month:02d}: {len(days)}일 (실제 예보 {real}일)")
 
     with open("data.json", "w", encoding="utf-8") as fp:
         json.dump(out, fp, ensure_ascii=False, indent=1)
