@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>홍천군 날씨 — 10월 · 11월 2026</title>
+<style>
+  :root{
+    --bg:#17262b; --bg-panel:#1e343b;
+    --maple:#c1440e; --maple-soft:#e0653a; --gold:#d4a017; --mist:#7fa8a3;
+    --ink:#ede6da; --ink-dim:#b7c4c2; --rule:rgba(237,230,218,0.12);
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;
+    background:
+      radial-gradient(ellipse 900px 500px at 15% -10%, rgba(193,68,14,.18), transparent 60%),
+      radial-gradient(ellipse 700px 500px at 100% 0%, rgba(212,160,23,.12), transparent 55%),
+      var(--bg);
+    color:var(--ink);
+    font-family:"Pretendard","Noto Sans KR",-apple-system,"Malgun Gothic",sans-serif;
+    line-height:1.5; padding:40px 20px 80px;
+  }
+  .wrap{max-width:960px;margin:0 auto}
+  header{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;
+    gap:16px;border-bottom:1px solid var(--rule);padding-bottom:24px}
+  .eyebrow{font-size:12.5px;letter-spacing:.16em;text-transform:uppercase;
+    color:var(--gold);font-weight:600;margin-bottom:10px}
+  h1{font-family:Georgia,"Nanum Myeongjo",serif;font-size:clamp(28px,4.2vw,42px);
+    margin:0;font-weight:700;letter-spacing:-.01em}
+  h1 span{color:var(--maple-soft)}
+  .meta{text-align:right;font-size:13px;color:var(--ink-dim);min-width:200px}
+  .meta b{color:var(--ink);font-weight:600}
+  .month{margin-top:44px}
+  .month-head{display:flex;align-items:baseline;gap:14px;margin-bottom:18px}
+  .month-head .num{font-family:Georgia,serif;font-size:52px;font-weight:700;
+    color:var(--maple);line-height:1}
+  .month-head .label{font-size:15px;color:var(--ink-dim)}
+  .grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
+  .dow{text-align:center;font-size:11px;color:var(--mist);padding-bottom:6px;letter-spacing:.08em}
+  .day{background:var(--bg-panel);border-radius:8px;padding:9px 7px;min-height:92px}
+  .day.hist{opacity:.42}
+  .day .d{font-size:12px;color:var(--ink-dim);font-variant-numeric:tabular-nums}
+  .day .desc{font-size:10.5px;color:var(--mist);margin-top:5px;height:26px;
+    overflow:hidden;line-height:1.25}
+  .day .temps{margin-top:8px;font-variant-numeric:tabular-nums}
+  .day .hi{color:var(--maple-soft);font-weight:700;font-size:15px}
+  .day .lo{color:var(--mist);font-size:12.5px;margin-left:5px}
+  .day .bar{margin-top:6px;height:3px;border-radius:2px;
+    background:rgba(237,230,218,.08);position:relative;overflow:hidden}
+  .day .bar i{position:absolute;top:0;bottom:0;border-radius:2px;
+    background:linear-gradient(90deg,var(--mist),var(--maple-soft))}
+  .state{margin-top:40px;color:var(--ink-dim);font-size:14px}
+  footer{margin-top:56px;padding-top:20px;border-top:1px solid var(--rule);
+    font-size:12px;color:var(--ink-dim)}
+  footer a{color:var(--gold)}
+  @media(max-width:640px){
+    .grid{gap:4px}.day{min-height:78px;padding:6px 5px}
+    .day .desc{display:none}.month-head .num{font-size:38px}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div>
+      <div class="eyebrow">강원도 · 홍천군</div>
+      <h1>홍천 <span>단풍철</span> 날씨</h1>
+    </div>
+    <div class="meta">
+      <div>마지막 갱신 <b id="updated">불러오는 중…</b></div>
+      <div>매일 오전 8시 자동 수집 · AccuWeather</div>
+    </div>
+  </header>
+
+  <div id="months"></div>
+  <div class="state" id="state"></div>
+
+  <footer>
+    AccuWeather 월별 예보를 하루 1회 수집해 화씨를 섭씨로 환산한 페이지입니다.
+    회색으로 흐리게 표시된 날짜는 아직 예보 범위 밖이라 <b>기록 평균</b>이 대신 들어간 날입니다.
+  </footer>
+</div>
+
+<script>
+const DOW = ["일","월","화","수","목","금","토"];
+
+function renderMonth(m){
+  const wrap = document.createElement("div");
+  wrap.className = "month";
+
+  const histCount = m.days.filter(d => d.historical).length;
+  const note = histCount
+    ? `${m.days.length - histCount}일까지 예보 · 이후 ${histCount}일은 기록 평균`
+    : `전 구간 예보 확보`;
+
+  const head = document.createElement("div");
+  head.className = "month-head";
+  head.innerHTML = `<div class="num">${m.month}</div><div class="label">${m.year} · ${note}</div>`;
+  wrap.appendChild(head);
+
+  const dowRow = document.createElement("div");
+  dowRow.className = "grid";
+  dowRow.innerHTML = DOW.map(d => `<div class="dow">${d}</div>`).join("");
+  wrap.appendChild(dowRow);
+
+  const grid = document.createElement("div");
+  grid.className = "grid";
+
+  const maxHi = Math.max(...m.days.map(d => d.hi));
+  const minLo = Math.min(...m.days.map(d => d.lo));
+  const span = Math.max(maxHi - minLo, 1);
+
+  for (let i = 0; i < m.leadingBlanks; i++) grid.appendChild(document.createElement("div"));
+
+  m.days.forEach(d => {
+    const el = document.createElement("div");
+    el.className = "day" + (d.historical ? " hist" : "");
+    const left = ((d.lo - minLo) / span) * 100;
+    const width = Math.max(((d.hi - d.lo) / span) * 100, 4);
+    el.innerHTML = `
+      <div class="d">${d.day}</div>
+      <div class="desc">${d.desc}</div>
+      <div class="temps"><span class="hi">${d.hi}°</span><span class="lo">${d.lo}°</span></div>
+      <div class="bar"><i style="left:${left}%;width:${width}%"></i></div>`;
+    grid.appendChild(el);
+  });
+
+  wrap.appendChild(grid);
+  return wrap;
+}
+
+fetch("data.json?t=" + Date.now())
+  .then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
+  .then(data => {
+    document.getElementById("updated").textContent =
+      data.updatedAt.replace("T", " ").slice(0, 16);
+    const host = document.getElementById("months");
+    data.months.forEach(m => host.appendChild(renderMonth(m)));
+  })
+  .catch(() => {
+    document.getElementById("updated").textContent = "—";
+    document.getElementById("state").textContent =
+      "예보 데이터를 아직 불러오지 못했습니다. Actions 탭에서 워크플로를 한 번 실행하면 data.json 이 생성됩니다.";
+  });
+</script>
+</body>
+</html>
