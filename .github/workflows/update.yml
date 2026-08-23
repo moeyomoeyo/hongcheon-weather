@@ -2,10 +2,11 @@ name: 홍천 날씨 매일 업데이트
 
 on:
   schedule:
-    # 23:00 UTC = 08:00 KST (다음 날)
     - cron: "0 23 * * *"
   workflow_dispatch:
-
+  push:
+    branches: [main]
+    
 permissions:
   contents: write
   pages: write
