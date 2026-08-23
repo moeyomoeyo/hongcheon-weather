@@ -1,0 +1,511 @@
+{
+ "location": "홍천군, 강원도",
+ "source": "Open-Meteo (예보 16일 + 2015~2025 평년값)",
+ "updatedAt": "2026-08-23T16:44+09:00",
+ "months": [
+  {
+   "key": "2026-10",
+   "year": 2026,
+   "month": 10,
+   "leadingBlanks": 4,
+   "days": [
+    {
+     "day": 1,
+     "desc": "평년값",
+     "hi": 22,
+     "lo": 12,
+     "pop": 36,
+     "historical": true
+    },
+    {
+     "day": 2,
+     "desc": "평년값",
+     "hi": 22,
+     "lo": 12,
+     "pop": 45,
+     "historical": true
+    },
+    {
+     "day": 3,
+     "desc": "평년값",
+     "hi": 22,
+     "lo": 13,
+     "pop": 45,
+     "historical": true
+    },
+    {
+     "day": 4,
+     "desc": "평년값",
+     "hi": 23,
+     "lo": 12,
+     "pop": 27,
+     "historical": true
+    },
+    {
+     "day": 5,
+     "desc": "평년값",
+     "hi": 20,
+     "lo": 12,
+     "pop": 55,
+     "historical": true
+    },
+    {
+     "day": 6,
+     "desc": "평년값",
+     "hi": 19,
+     "lo": 11,
+     "pop": 45,
+     "historical": true
+    },
+    {
+     "day": 7,
+     "desc": "평년값",
+     "hi": 20,
+     "lo": 11,
+     "pop": 36,
+     "historical": true
+    },
+    {
+     "day": 8,
+     "desc": "평년값",
+     "hi": 21,
+     "lo": 11,
+     "pop": 36,
+     "historical": true
+    },
+    {
+     "day": 9,
+     "desc": "평년값",
+     "hi": 19,
+     "lo": 10,
+     "pop": 9,
+     "historical": true
+    },
+    {
+     "day": 10,
+     "desc": "평년값",
+     "hi": 18,
+     "lo": 10,
+     "pop": 36,
+     "historical": true
+    },
+    {
+     "day": 11,
+     "desc": "평년값",
+     "hi": 19,
+     "lo": 8,
+     "pop": 36,
+     "historical": true
+    },
+    {
+     "day": 12,
+     "desc": "평년값",
+     "hi": 18,
+     "lo": 8,
+     "pop": 9,
+     "historical": true
+    },
+    {
+     "day": 13,
+     "desc": "평년값",
+     "hi": 19,
+     "lo": 8,
+     "pop": 9,
+     "historical": true
+    },
+    {
+     "day": 14,
+     "desc": "평년값",
+     "hi": 19,
+     "lo": 9,
+     "pop": 18,
+     "historical": true
+    },
+    {
+     "day": 15,
+     "desc": "평년값",
+     "hi": 20,
+     "lo": 9,
+     "pop": 18,
+     "historical": true
+    },
+    {
+     "day": 16,
+     "desc": "평년값",
+     "hi": 19,
+     "lo": 9,
+     "pop": 27,
+     "historical": true
+    },
+    {
+     "day": 17,
+     "desc": "평년값",
+     "hi": 18,
+     "lo": 6,
+     "pop": 9,
+     "historical": true
+    },
+    {
+     "day": 18,
+     "desc": "평년값",
+     "hi": 18,
+     "lo": 7,
+     "pop": 27,
+     "historical": true
+    },
+    {
+     "day": 19,
+     "desc": "평년값",
+     "hi": 18,
+     "lo": 7,
+     "pop": 27,
+     "historical": true
+    },
+    {
+     "day": 20,
+     "desc": "평년값",
+     "hi": 18,
+     "lo": 6,
+     "pop": 0,
+     "historical": true
+    },
+    {
+     "day": 21,
+     "desc": "평년값",
+     "hi": 18,
+     "lo": 5,
+     "pop": 0,
+     "historical": true
+    },
+    {
+     "day": 22,
+     "desc": "평년값",
+     "hi": 18,
+     "lo": 7,
+     "pop": 27,
+     "historical": true
+    },
+    {
+     "day": 23,
+     "desc": "평년값",
+     "hi": 16,
+     "lo": 6,
+     "pop": 36,
+     "historical": true
+    },
+    {
+     "day": 24,
+     "desc": "평년값",
+     "hi": 16,
+     "lo": 5,
+     "pop": 9,
+     "historical": true
+    },
+    {
+     "day": 25,
+     "desc": "평년값",
+     "hi": 17,
+     "lo": 5,
+     "pop": 18,
+     "historical": true
+    },
+    {
+     "day": 26,
+     "desc": "평년값",
+     "hi": 17,
+     "lo": 5,
+     "pop": 18,
+     "historical": true
+    },
+    {
+     "day": 27,
+     "desc": "평년값",
+     "hi": 16,
+     "lo": 5,
+     "pop": 18,
+     "historical": true
+    },
+    {
+     "day": 28,
+     "desc": "평년값",
+     "hi": 16,
+     "lo": 4,
+     "pop": 9,
+     "historical": true
+    },
+    {
+     "day": 29,
+     "desc": "평년값",
+     "hi": 15,
+     "lo": 3,
+     "pop": 9,
+     "historical": true
+    },
+    {
+     "day": 30,
+     "desc": "평년값",
+     "hi": 14,
+     "lo": 2,
+     "pop": 0,
+     "historical": true
+    },
+    {
+     "day": 31,
+     "desc": "평년값",
+     "hi": 15,
+     "lo": 3,
+     "pop": 0,
+     "historical": true
+    }
+   ]
+  },
+  {
+   "key": "2026-11",
+   "year": 2026,
+   "month": 11,
+   "leadingBlanks": 0,
+   "days": [
+    {
+     "day": 1,
+     "desc": "평년값",
+     "hi": 14,
+     "lo": 5,
+     "pop": 27,
+     "historical": true
+    },
+    {
+     "day": 2,
+     "desc": "평년값",
+     "hi": 15,
+     "lo": 4,
+     "pop": 0,
+     "historical": true
+    },
+    {
+     "day": 3,
+     "desc": "평년값",
+     "hi": 14,
+     "lo": 4,
+     "pop": 27,
+     "historical": true
+    },
+    {
+     "day": 4,
+     "desc": "평년값",
+     "hi": 14,
+     "lo": 2,
+     "pop": 9,
+     "historical": true
+    },
+    {
+     "day": 5,
+     "desc": "평년값",
+     "hi": 15,
+     "lo": 3,
+     "pop": 18,
+     "historical": true
+    },
+    {
+     "day": 6,
+     "desc": "평년값",
+     "hi": 15,
+     "lo": 3,
+     "pop": 18,
+     "historical": true
+    },
+    {
+     "day": 7,
+     "desc": "평년값",
+     "hi": 14,
+     "lo": 4,
+     "pop": 27,
+     "historical": true
+    },
+    {
+     "day": 8,
+     "desc": "평년값",
+     "hi": 13,
+     "lo": 4,
+     "pop": 45,
+     "historical": true
+    },
+    {
+     "day": 9,
+     "desc": "평년값",
+     "hi": 12,
+     "lo": 2,
+     "pop": 27,
+     "historical": true
+    },
+    {
+     "day": 10,
+     "desc": "평년값",
+     "hi": 12,
+     "lo": 2,
+     "pop": 27,
+     "historical": true
+    },
+    {
+     "day": 11,
+     "desc": "평년값",
+     "hi": 13,
+     "lo": 1,
+     "pop": 9,
+     "historical": true
+    },
+    {
+     "day": 12,
+     "desc": "평년값",
+     "hi": 13,
+     "lo": 1,
+     "pop": 9,
+     "historical": true
+    },
+    {
+     "day": 13,
+     "desc": "평년값",
+     "hi": 13,
+     "lo": 2,
+     "pop": 45,
+     "historical": true
+    },
+    {
+     "day": 14,
+     "desc": "평년값",
+     "hi": 12,
+     "lo": 1,
+     "pop": 36,
+     "historical": true
+    },
+    {
+     "day": 15,
+     "desc": "평년값",
+     "hi": 12,
+     "lo": 1,
+     "pop": 18,
+     "historical": true
+    },
+    {
+     "day": 16,
+     "desc": "평년값",
+     "hi": 12,
+     "lo": 2,
+     "pop": 27,
+     "historical": true
+    },
+    {
+     "day": 17,
+     "desc": "평년값",
+     "hi": 11,
+     "lo": 0,
+     "pop": 9,
+     "historical": true
+    },
+    {
+     "day": 18,
+     "desc": "평년값",
+     "hi": 10,
+     "lo": -1,
+     "pop": 36,
+     "historical": true
+    },
+    {
+     "day": 19,
+     "desc": "평년값",
+     "hi": 10,
+     "lo": 0,
+     "pop": 18,
+     "historical": true
+    },
+    {
+     "day": 20,
+     "desc": "평년값",
+     "hi": 10,
+     "lo": -1,
+     "pop": 0,
+     "historical": true
+    },
+    {
+     "day": 21,
+     "desc": "평년값",
+     "hi": 11,
+     "lo": -1,
+     "pop": 9,
+     "historical": true
+    },
+    {
+     "day": 22,
+     "desc": "평년값",
+     "hi": 10,
+     "lo": -1,
+     "pop": 36,
+     "historical": true
+    },
+    {
+     "day": 23,
+     "desc": "평년값",
+     "hi": 8,
+     "lo": -2,
+     "pop": 27,
+     "historical": true
+    },
+    {
+     "day": 24,
+     "desc": "평년값",
+     "hi": 7,
+     "lo": -2,
+     "pop": 9,
+     "historical": true
+    },
+    {
+     "day": 25,
+     "desc": "평년값",
+     "hi": 8,
+     "lo": -2,
+     "pop": 27,
+     "historical": true
+    },
+    {
+     "day": 26,
+     "desc": "평년값",
+     "hi": 7,
+     "lo": -2,
+     "pop": 9,
+     "historical": true
+    },
+    {
+     "day": 27,
+     "desc": "평년값",
+     "hi": 7,
+     "lo": -3,
+     "pop": 27,
+     "historical": true
+    },
+    {
+     "day": 28,
+     "desc": "평년값",
+     "hi": 6,
+     "lo": -3,
+     "pop": 18,
+     "historical": true
+    },
+    {
+     "day": 29,
+     "desc": "평년값",
+     "hi": 6,
+     "lo": -4,
+     "pop": 18,
+     "historical": true
+    },
+    {
+     "day": 30,
+     "desc": "평년값",
+     "hi": 5,
+     "lo": -3,
+     "pop": 27,
+     "historical": true
+    }
+   ]
+  }
+ ]
+}
