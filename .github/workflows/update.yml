@@ -27,9 +27,8 @@ jobs:
 
       - name: 의존성 설치
         run: |
-          pip install requests beautifulsoup4 playwright
-          playwright install --with-deps chromium
-
+          pip install requests
+          
       - name: 예보 수집
         run: python scrape.py
 
