@@ -8,6 +8,7 @@
   :root{
     --bg:#17262b; --bg-panel:#1e343b;
     --maple:#c1440e; --maple-soft:#e0653a; --gold:#d4a017; --mist:#7fa8a3;
+    --rain:#5fa8d3; --snow:#cfe4ec;
     --ink:#ede6da; --ink-dim:#b7c4c2; --rule:rgba(237,230,218,0.12);
   }
   *{box-sizing:border-box}
@@ -21,7 +22,7 @@
     font-family:"Pretendard","Noto Sans KR",-apple-system,"Malgun Gothic",sans-serif;
     line-height:1.5; padding:40px 20px 80px;
   }
-  .wrap{max-width:960px;margin:0 auto}
+  .wrap{max-width:980px;margin:0 auto}
   header{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;
     gap:16px;border-bottom:1px solid var(--rule);padding-bottom:24px}
   .eyebrow{font-size:12.5px;letter-spacing:.16em;text-transform:uppercase;
@@ -31,6 +32,13 @@
   h1 span{color:var(--maple-soft)}
   .meta{text-align:right;font-size:13px;color:var(--ink-dim);min-width:200px}
   .meta b{color:var(--ink);font-weight:600}
+
+  .legend{display:flex;flex-wrap:wrap;gap:18px;margin-top:20px;font-size:12px;color:var(--ink-dim)}
+  .legend span{display:flex;align-items:center;gap:6px}
+  .legend svg{width:18px;height:18px}
+  .swatch{width:12px;height:12px;border-radius:3px;background:var(--bg-panel);
+    border:1px dashed rgba(237,230,218,.35)}
+
   .month{margin-top:44px}
   .month-head{display:flex;align-items:baseline;gap:14px;margin-bottom:18px}
   .month-head .num{font-family:Georgia,serif;font-size:52px;font-weight:700;
@@ -38,25 +46,31 @@
   .month-head .label{font-size:15px;color:var(--ink-dim)}
   .grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
   .dow{text-align:center;font-size:11px;color:var(--mist);padding-bottom:6px;letter-spacing:.08em}
-  .day{background:var(--bg-panel);border-radius:8px;padding:9px 7px;min-height:92px}
-  .day.hist{opacity:.42}
-  .day .d{font-size:12px;color:var(--ink-dim);font-variant-numeric:tabular-nums}
-  .day .desc{font-size:10.5px;color:var(--mist);margin-top:5px;height:26px;
-    overflow:hidden;line-height:1.25}
-  .day .temps{margin-top:8px;font-variant-numeric:tabular-nums}
+
+  .day{background:var(--bg-panel);border-radius:8px;padding:8px 6px;min-height:112px;
+    display:flex;flex-direction:column;align-items:center}
+  .day.hist{background:transparent;border:1px dashed rgba(237,230,218,.14)}
+  .day .d{align-self:flex-start;font-size:12px;color:var(--ink-dim);
+    font-variant-numeric:tabular-nums}
+  .day .ico{margin:2px 0 1px}
+  .day .ico svg{width:30px;height:30px;display:block}
+  .day.hist .ico svg{opacity:.55}
+  .day .temps{font-variant-numeric:tabular-nums;white-space:nowrap}
   .day .hi{color:var(--maple-soft);font-weight:700;font-size:15px}
-  .day .lo{color:var(--mist);font-size:12.5px;margin-left:5px}
-  .day .bar{margin-top:6px;height:3px;border-radius:2px;
-    background:rgba(237,230,218,.08);position:relative;overflow:hidden}
-  .day .bar i{position:absolute;top:0;bottom:0;border-radius:2px;
-    background:linear-gradient(90deg,var(--mist),var(--maple-soft))}
+  .day .lo{color:var(--mist);font-size:12.5px;margin-left:4px}
+  .day .pop{font-size:10.5px;color:var(--rain);margin-top:2px;font-variant-numeric:tabular-nums}
+  .day .pop.dim{color:var(--ink-dim);opacity:.6}
+
   .state{margin-top:40px;color:var(--ink-dim);font-size:14px}
   footer{margin-top:56px;padding-top:20px;border-top:1px solid var(--rule);
     font-size:12px;color:var(--ink-dim)}
-  footer a{color:var(--gold)}
   @media(max-width:640px){
-    .grid{gap:4px}.day{min-height:78px;padding:6px 5px}
-    .day .desc{display:none}.month-head .num{font-size:38px}
+    .grid{gap:4px}
+    .day{min-height:92px;padding:6px 3px}
+    .day .ico svg{width:24px;height:24px}
+    .day .hi{font-size:13px}.day .lo{font-size:11px}
+    .day .pop{display:none}
+    .month-head .num{font-size:38px}
   }
 </style>
 </head>
@@ -69,34 +83,125 @@
     </div>
     <div class="meta">
       <div>마지막 갱신 <b id="updated">불러오는 중…</b></div>
-      <div>매일 오전 8시 자동 수집 · AccuWeather</div>
+      <div id="src">매일 오전 8시 자동 수집</div>
     </div>
   </header>
+
+  <div class="legend" id="legend"></div>
 
   <div id="months"></div>
   <div class="state" id="state"></div>
 
   <footer>
-    AccuWeather 월별 예보를 하루 1회 수집해 화씨를 섭씨로 환산한 페이지입니다.
-    회색으로 흐리게 표시된 날짜는 아직 예보 범위 밖이라 <b>기록 평균</b>이 대신 들어간 날입니다.
+    실선 칸은 실제 예보, 점선 칸은 2015~2025년 같은 날짜의 관측 평균입니다.
+    예보는 약 16일 앞까지만 나오므로, 날짜가 가까워질수록 점선 칸이 실선으로 바뀝니다.
+    파란 숫자는 강수 확률(평년 칸은 그날 비가 온 해의 비율)입니다.
   </footer>
 </div>
 
 <script>
 const DOW = ["일","월","화","수","목","금","토"];
 
+/* ---------- 아이콘 ---------- */
+const SUN = `<svg viewBox="0 0 32 32" fill="none">
+  <circle cx="16" cy="16" r="6.5" fill="var(--gold)"/>
+  <g stroke="var(--gold)" stroke-width="2" stroke-linecap="round">
+    <path d="M16 3v3.5M16 25.5V29M3 16h3.5M25.5 16H29"/>
+    <path d="M6.8 6.8l2.5 2.5M22.7 22.7l2.5 2.5M25.2 6.8l-2.5 2.5M9.3 22.7l-2.5 2.5"/>
+  </g></svg>`;
+
+const SUN_CLOUD = `<svg viewBox="0 0 32 32" fill="none">
+  <circle cx="12" cy="12" r="5" fill="var(--gold)"/>
+  <g stroke="var(--gold)" stroke-width="1.8" stroke-linecap="round">
+    <path d="M12 3.5v2.4M3.5 12h2.4M6.2 6.2l1.7 1.7M17.8 6.2l-1.7 1.7"/>
+  </g>
+  <path d="M12.5 24.5h11a4.5 4.5 0 0 0 .3-9 6 6 0 0 0-11.4 1.2 4 4 0 0 0 .1 7.8z"
+        fill="var(--mist)"/></svg>`;
+
+const CLOUD_LIGHT = `<svg viewBox="0 0 32 32" fill="none">
+  <circle cx="11" cy="11" r="4.2" fill="var(--gold)" opacity=".85"/>
+  <path d="M10 25h12.5a5 5 0 0 0 .3-10 6.6 6.6 0 0 0-12.6 1.3A4.4 4.4 0 0 0 10 25z"
+        fill="var(--mist)"/></svg>`;
+
+const CLOUD = `<svg viewBox="0 0 32 32" fill="none">
+  <path d="M9.5 25h13a5.2 5.2 0 0 0 .4-10.4 6.9 6.9 0 0 0-13.1 1.3A4.6 4.6 0 0 0 9.5 25z"
+        fill="var(--mist)"/>
+  <path d="M20 12.5a5.5 5.5 0 0 1 5.2 3.8" stroke="var(--ink-dim)" stroke-width="1.2"
+        opacity=".4" fill="none"/></svg>`;
+
+const FOG = `<svg viewBox="0 0 32 32" fill="none">
+  <path d="M9 19h13a5 5 0 0 0 .4-10A6.7 6.7 0 0 0 9.3 10.3 4.4 4.4 0 0 0 9 19z"
+        fill="var(--mist)" opacity=".8"/>
+  <g stroke="var(--ink-dim)" stroke-width="2" stroke-linecap="round" opacity=".75">
+    <path d="M6 23h20M9 27h14"/></g></svg>`;
+
+const RAIN = `<svg viewBox="0 0 32 32" fill="none">
+  <path d="M9.5 20h13a5.2 5.2 0 0 0 .4-10.4A6.9 6.9 0 0 0 9.8 10.9 4.6 4.6 0 0 0 9.5 20z"
+        fill="var(--mist)"/>
+  <g stroke="var(--rain)" stroke-width="2.2" stroke-linecap="round">
+    <path d="M12 23.5l-1.5 4M18 23.5l-1.5 4M24 23.5l-1.5 4"/></g></svg>`;
+
+const RAIN_HEAVY = `<svg viewBox="0 0 32 32" fill="none">
+  <path d="M9.5 19h13a5.2 5.2 0 0 0 .4-10.4A6.9 6.9 0 0 0 9.8 9.9 4.6 4.6 0 0 0 9.5 19z"
+        fill="var(--mist)"/>
+  <g stroke="var(--rain)" stroke-width="2.4" stroke-linecap="round">
+    <path d="M11 22l-2 5.5M16 22l-2 5.5M21 22l-2 5.5M25.5 22l-2 5.5"/></g></svg>`;
+
+const SNOW = `<svg viewBox="0 0 32 32" fill="none">
+  <path d="M9.5 19.5h13a5.2 5.2 0 0 0 .4-10.4A6.9 6.9 0 0 0 9.8 10.4 4.6 4.6 0 0 0 9.5 19.5z"
+        fill="var(--mist)"/>
+  <g stroke="var(--snow)" stroke-width="1.8" stroke-linecap="round">
+    <path d="M12 23v4M10.3 24l3.4 2M13.7 24l-3.4 2"/>
+    <path d="M21 23v4M19.3 24l3.4 2M22.7 24l-3.4 2"/></g></svg>`;
+
+const STORM = `<svg viewBox="0 0 32 32" fill="none">
+  <path d="M9.5 18.5h13a5.2 5.2 0 0 0 .4-10.4A6.9 6.9 0 0 0 9.8 9.4 4.6 4.6 0 0 0 9.5 18.5z"
+        fill="var(--mist)"/>
+  <path d="M17.5 20l-5 5.5h4l-2 5 6.5-7h-4.2l2.2-3.5z" fill="var(--gold)"/></svg>`;
+
+function iconFor(day){
+  const t = day.desc || "";
+  if (day.historical){
+    const p = day.pop == null ? 20 : day.pop;
+    if (p >= 40) return RAIN;
+    if (p >= 25) return CLOUD_LIGHT;
+    return SUN_CLOUD;
+  }
+  if (/뇌우|우박/.test(t))            return STORM;
+  if (/눈|싸락/.test(t))              return SNOW;
+  if (/강한 비|강한 소나기/.test(t))   return RAIN_HEAVY;
+  if (/비|이슬비|소나기/.test(t))      return RAIN;
+  if (/안개/.test(t))                 return FOG;
+  if (/^흐림/.test(t))                return CLOUD;
+  if (/약간 흐림/.test(t))            return CLOUD_LIGHT;
+  if (/대체로 맑음/.test(t))          return SUN_CLOUD;
+  if (/맑음/.test(t))                 return SUN;
+  return CLOUD;
+}
+
+/* ---------- 범례 ---------- */
+document.getElementById("legend").innerHTML = `
+  <span>${SUN} 맑음</span>
+  <span>${SUN_CLOUD} 대체로 맑음</span>
+  <span>${CLOUD_LIGHT} 약간 흐림</span>
+  <span>${CLOUD} 흐림</span>
+  <span>${RAIN} 비</span>
+  <span>${SNOW} 눈</span>
+  <span><i class="swatch"></i> 점선 = 평년값</span>`;
+
+/* ---------- 렌더 ---------- */
 function renderMonth(m){
   const wrap = document.createElement("div");
   wrap.className = "month";
 
-  const histCount = m.days.filter(d => d.historical).length;
-  const note = histCount
-    ? `${m.days.length - histCount}일까지 예보 · 이후 ${histCount}일은 기록 평균`
-    : `전 구간 예보 확보`;
+  const real = m.days.filter(d => !d.historical).length;
+  const note = real
+    ? `${m.year} · 실제 예보 ${real}일 · 나머지 평년값`
+    : `${m.year} · 아직 예보 범위 밖 (전부 평년값)`;
 
   const head = document.createElement("div");
   head.className = "month-head";
-  head.innerHTML = `<div class="num">${m.month}</div><div class="label">${m.year} · ${note}</div>`;
+  head.innerHTML = `<div class="num">${m.month}</div><div class="label">${note}</div>`;
   wrap.appendChild(head);
 
   const dowRow = document.createElement("div");
@@ -106,23 +211,19 @@ function renderMonth(m){
 
   const grid = document.createElement("div");
   grid.className = "grid";
-
-  const maxHi = Math.max(...m.days.map(d => d.hi));
-  const minLo = Math.min(...m.days.map(d => d.lo));
-  const span = Math.max(maxHi - minLo, 1);
-
   for (let i = 0; i < m.leadingBlanks; i++) grid.appendChild(document.createElement("div"));
 
   m.days.forEach(d => {
     const el = document.createElement("div");
     el.className = "day" + (d.historical ? " hist" : "");
-    const left = ((d.lo - minLo) / span) * 100;
-    const width = Math.max(((d.hi - d.lo) / span) * 100, 4);
+    el.title = d.desc + (d.pop != null ? ` · 강수 ${d.pop}%` : "");
+    const pop = d.pop == null ? "" :
+      `<div class="pop${d.historical ? " dim" : ""}">${d.pop}%</div>`;
     el.innerHTML = `
       <div class="d">${d.day}</div>
-      <div class="desc">${d.desc}</div>
+      <div class="ico">${iconFor(d)}</div>
       <div class="temps"><span class="hi">${d.hi}°</span><span class="lo">${d.lo}°</span></div>
-      <div class="bar"><i style="left:${left}%;width:${width}%"></i></div>`;
+      ${pop}`;
     grid.appendChild(el);
   });
 
@@ -135,13 +236,14 @@ fetch("data.json?t=" + Date.now())
   .then(data => {
     document.getElementById("updated").textContent =
       data.updatedAt.replace("T", " ").slice(0, 16);
+    if (data.source) document.getElementById("src").textContent = data.source;
     const host = document.getElementById("months");
     data.months.forEach(m => host.appendChild(renderMonth(m)));
   })
   .catch(() => {
     document.getElementById("updated").textContent = "—";
     document.getElementById("state").textContent =
-      "예보 데이터를 아직 불러오지 못했습니다. Actions 탭에서 워크플로를 한 번 실행하면 data.json 이 생성됩니다.";
+      "데이터를 불러오지 못했습니다. Actions 탭에서 워크플로를 한 번 실행해 주세요.";
   });
 </script>
 </body>
