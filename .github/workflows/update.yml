@@ -38,7 +38,9 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add data.json
-          git diff --staged --quiet || git commit -m "날씨 갱신 $(date -u +'%Y-%m-%d')"
+          git diff --staged --quiet && exit 0
+          git commit -m "날씨 갱신 $(date -u +'%Y-%m-%d')"
+          git pull --rebase
           git push
 
       - name: Pages 아티팩트 업로드
