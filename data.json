@@ -1,7 +1,7 @@
 {
  "location": "홍천군, 강원도",
  "source": "Open-Meteo (예보 16일 + 2015~2025 평년값)",
- "updatedAt": "2026-09-18T10:04+09:00",
+ "updatedAt": "2026-09-20T09:42+09:00",
  "months": [
   {
    "key": "2026-10",
@@ -11,43 +11,43 @@
    "days": [
     {
      "day": 1,
-     "desc": "흐림",
+     "desc": "대체로 맑음",
      "hi": 20,
-     "lo": 8,
-     "pop": 12,
+     "lo": 6,
+     "pop": 14,
      "historical": false
     },
     {
      "day": 2,
      "desc": "흐림",
-     "hi": 19,
-     "lo": 11,
-     "pop": 13,
+     "hi": 23,
+     "lo": 8,
+     "pop": 8,
      "historical": false
     },
     {
      "day": 3,
      "desc": "흐림",
-     "hi": 22,
-     "lo": 8,
-     "pop": 13,
+     "hi": 23,
+     "lo": 12,
+     "pop": 18,
      "historical": false
     },
     {
      "day": 4,
-     "desc": "평년값",
-     "hi": 23,
-     "lo": 12,
-     "pop": 27,
-     "historical": true
+     "desc": "흐림",
+     "hi": 20,
+     "lo": 6,
+     "pop": 12,
+     "historical": false
     },
     {
      "day": 5,
-     "desc": "평년값",
+     "desc": "약간 흐림",
      "hi": 20,
-     "lo": 12,
-     "pop": 55,
-     "historical": true
+     "lo": 4,
+     "pop": 10,
+     "historical": false
     },
     {
      "day": 6,
