@@ -1,7 +1,7 @@
 {
  "location": "홍천군, 강원도",
  "source": "Open-Meteo (예보 16일 + 2015~2025 평년값)",
- "updatedAt": "2026-09-24T10:07+09:00",
+ "updatedAt": "2026-09-25T10:09+09:00",
  "months": [
   {
    "key": "2026-10",
@@ -14,80 +14,80 @@
      "desc": "맑음",
      "hi": 19,
      "lo": 8,
-     "pop": 4,
+     "pop": 20,
      "historical": false
     },
     {
      "day": 2,
      "desc": "맑음",
-     "hi": 21,
-     "lo": 8,
+     "hi": 20,
+     "lo": 6,
      "pop": 0,
      "historical": false
     },
     {
      "day": 3,
-     "desc": "소나기",
-     "hi": 22,
-     "lo": 7,
-     "pop": 10,
+     "desc": "약한 이슬비",
+     "hi": 21,
+     "lo": 6,
+     "pop": 7,
      "historical": false
     },
     {
      "day": 4,
-     "desc": "소나기",
-     "hi": 17,
-     "lo": 7,
-     "pop": 10,
+     "desc": "약한 이슬비",
+     "hi": 16,
+     "lo": 8,
+     "pop": 12,
      "historical": false
     },
     {
      "day": 5,
-     "desc": "대체로 맑음",
-     "hi": 17,
-     "lo": 5,
-     "pop": 8,
+     "desc": "맑음",
+     "hi": 16,
+     "lo": 6,
+     "pop": 6,
      "historical": false
     },
     {
      "day": 6,
-     "desc": "약간 흐림",
-     "hi": 22,
-     "lo": 7,
-     "pop": 6,
+     "desc": "맑음",
+     "hi": 19,
+     "lo": 6,
+     "pop": 8,
      "historical": false
     },
     {
      "day": 7,
      "desc": "흐림",
      "hi": 22,
-     "lo": 8,
-     "pop": 11,
+     "lo": 6,
+     "pop": 8,
      "historical": false
     },
     {
      "day": 8,
      "desc": "흐림",
-     "hi": 24,
+     "hi": 23,
      "lo": 8,
-     "pop": 9,
+     "pop": 10,
      "historical": false
     },
     {
      "day": 9,
      "desc": "흐림",
-     "hi": 23,
-     "lo": 9,
-     "pop": 6,
+     "hi": 22,
+     "lo": 12,
+     "pop": 12,
      "historical": false
     },
     {
      "day": 10,
-     "desc": "평년값",
-     "hi": 18,
-     "lo": 10,
-     "pop": 36,
-     "historical": true
+     "desc": "약한 이슬비",
+     "hi": 23,
+     "lo": 14,
+     "pop": 13,
+     "historical": false
     },
     {
      "day": 11,
