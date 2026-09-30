@@ -1,7 +1,7 @@
 {
  "location": "홍천군, 강원도",
  "source": "Open-Meteo (예보 16일 + 2015~2025 평년값)",
- "updatedAt": "2026-09-29T11:29+09:00",
+ "updatedAt": "2026-09-30T10:51+09:00",
  "months": [
   {
    "key": "2026-10",
@@ -11,123 +11,123 @@
    "days": [
     {
      "day": 1,
-     "desc": "대체로 맑음",
-     "hi": 18,
-     "lo": 9,
-     "pop": 25,
+     "desc": "약간 흐림",
+     "hi": 19,
+     "lo": 11,
+     "pop": 16,
      "historical": false
     },
     {
      "day": 2,
      "desc": "맑음",
-     "hi": 20,
-     "lo": 6,
+     "hi": 19,
+     "lo": 9,
      "pop": 0,
      "historical": false
     },
     {
      "day": 3,
      "desc": "흐림",
-     "hi": 22,
-     "lo": 4,
-     "pop": 1,
+     "hi": 21,
+     "lo": 5,
+     "pop": 0,
      "historical": false
     },
     {
      "day": 4,
-     "desc": "소나기",
+     "desc": "흐림",
      "hi": 23,
-     "lo": 8,
-     "pop": 42,
+     "lo": 9,
+     "pop": 48,
      "historical": false
     },
     {
      "day": 5,
-     "desc": "소나기",
-     "hi": 18,
-     "lo": 10,
-     "pop": 47,
+     "desc": "이슬비",
+     "hi": 21,
+     "lo": 12,
+     "pop": 53,
      "historical": false
     },
     {
      "day": 6,
-     "desc": "맑음",
-     "hi": 20,
-     "lo": 8,
-     "pop": 5,
+     "desc": "약한 이슬비",
+     "hi": 21,
+     "lo": 10,
+     "pop": 14,
      "historical": false
     },
     {
      "day": 7,
-     "desc": "이슬비",
-     "hi": 18,
-     "lo": 6,
+     "desc": "흐림",
+     "hi": 22,
+     "lo": 9,
      "pop": 6,
      "historical": false
     },
     {
      "day": 8,
-     "desc": "맑음",
+     "desc": "흐림",
      "hi": 22,
-     "lo": 8,
-     "pop": 2,
+     "lo": 9,
+     "pop": 3,
      "historical": false
     },
     {
      "day": 9,
-     "desc": "맑음",
-     "hi": 22,
-     "lo": 8,
-     "pop": 2,
+     "desc": "대체로 맑음",
+     "hi": 24,
+     "lo": 10,
+     "pop": 6,
      "historical": false
     },
     {
      "day": 10,
-     "desc": "약한 이슬비",
-     "hi": 22,
-     "lo": 11,
-     "pop": 12,
+     "desc": "흐림",
+     "hi": 24,
+     "lo": 10,
+     "pop": 4,
      "historical": false
     },
     {
      "day": 11,
-     "desc": "흐림",
-     "hi": 21,
-     "lo": 9,
-     "pop": 12,
+     "desc": "대체로 맑음",
+     "hi": 22,
+     "lo": 12,
+     "pop": 8,
      "historical": false
     },
     {
      "day": 12,
-     "desc": "약한 이슬비",
-     "hi": 21,
-     "lo": 8,
+     "desc": "이슬비",
+     "hi": 20,
+     "lo": 11,
      "pop": 16,
      "historical": false
     },
     {
      "day": 13,
-     "desc": "약한 이슬비",
-     "hi": 16,
-     "lo": 10,
-     "pop": 12,
+     "desc": "흐림",
+     "hi": 19,
+     "lo": 8,
+     "pop": 20,
      "historical": false
     },
     {
      "day": 14,
-     "desc": "흐림",
-     "hi": 23,
-     "lo": 10,
-     "pop": 16,
+     "desc": "대체로 맑음",
+     "hi": 19,
+     "lo": 6,
+     "pop": 14,
      "historical": false
     },
     {
      "day": 15,
-     "desc": "평년값",
-     "hi": 20,
-     "lo": 9,
-     "pop": 18,
-     "historical": true
+     "desc": "흐림",
+     "hi": 21,
+     "lo": 6,
+     "pop": 13,
+     "historical": false
     },
     {
      "day": 16,
