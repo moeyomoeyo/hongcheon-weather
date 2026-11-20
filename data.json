@@ -1,7 +1,7 @@
 {
  "location": "홍천군, 강원도",
  "source": "Open-Meteo (예보 16일 + 2015~2025 평년값)",
- "updatedAt": "2026-11-17T13:57+09:00",
+ "updatedAt": "2026-11-20T12:52+09:00",
  "months": [
   {
    "key": "2026-10",
@@ -395,114 +395,114 @@
     },
     {
      "day": 17,
-     "desc": "약한 비",
+     "desc": "평년값",
      "hi": 11,
-     "lo": 6,
-     "pop": 98,
-     "historical": false
+     "lo": 0,
+     "pop": 9,
+     "historical": true
     },
     {
      "day": 18,
-     "desc": "약한 이슬비",
-     "hi": 8,
-     "lo": -2,
-     "pop": 76,
-     "historical": false
+     "desc": "평년값",
+     "hi": 10,
+     "lo": -1,
+     "pop": 36,
+     "historical": true
     },
     {
      "day": 19,
-     "desc": "대체로 맑음",
-     "hi": 2,
-     "lo": -5,
-     "pop": 2,
-     "historical": false
+     "desc": "평년값",
+     "hi": 10,
+     "lo": 0,
+     "pop": 18,
+     "historical": true
     },
     {
      "day": 20,
      "desc": "맑음",
-     "hi": 2,
-     "lo": -6,
+     "hi": -1,
+     "lo": -7,
      "pop": 0,
      "historical": false
     },
     {
      "day": 21,
      "desc": "맑음",
-     "hi": 1,
-     "lo": -6,
+     "hi": 0,
+     "lo": -9,
      "pop": 0,
      "historical": false
     },
     {
      "day": 22,
      "desc": "약간 흐림",
-     "hi": 4,
-     "lo": -7,
+     "hi": 3,
+     "lo": -11,
      "pop": 0,
      "historical": false
     },
     {
      "day": 23,
-     "desc": "이슬비",
-     "hi": 9,
-     "lo": -5,
-     "pop": 63,
+     "desc": "소나기",
+     "hi": 6,
+     "lo": -3,
+     "pop": 97,
      "historical": false
     },
     {
      "day": 24,
-     "desc": "이슬비",
+     "desc": "강한 이슬비",
      "hi": 6,
-     "lo": -4,
-     "pop": 69,
+     "lo": -6,
+     "pop": 75,
      "historical": false
     },
     {
      "day": 25,
      "desc": "대체로 맑음",
-     "hi": 5,
-     "lo": -4,
-     "pop": 7,
+     "hi": 4,
+     "lo": -6,
+     "pop": 6,
      "historical": false
     },
     {
      "day": 26,
-     "desc": "약한 이슬비",
-     "hi": 9,
-     "lo": -3,
-     "pop": 8,
+     "desc": "대체로 맑음",
+     "hi": 12,
+     "lo": -1,
+     "pop": 28,
      "historical": false
     },
     {
      "day": 27,
-     "desc": "안개",
-     "hi": 11,
-     "lo": -2,
-     "pop": 19,
+     "desc": "약한 이슬비",
+     "hi": 15,
+     "lo": 2,
+     "pop": 24,
      "historical": false
     },
     {
      "day": 28,
      "desc": "약한 이슬비",
-     "hi": 6,
-     "lo": -2,
-     "pop": 29,
+     "hi": 10,
+     "lo": -3,
+     "pop": 34,
      "historical": false
     },
     {
      "day": 29,
-     "desc": "대체로 맑음",
-     "hi": 8,
-     "lo": -3,
-     "pop": 11,
+     "desc": "흐림",
+     "hi": 7,
+     "lo": -4,
+     "pop": 17,
      "historical": false
     },
     {
      "day": 30,
-     "desc": "흐림",
-     "hi": 12,
-     "lo": -2,
-     "pop": 18,
+     "desc": "대체로 맑음",
+     "hi": 13,
+     "lo": 0,
+     "pop": 6,
      "historical": false
     }
    ]
