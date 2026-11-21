@@ -1,7 +1,7 @@
 {
  "location": "홍천군, 강원도",
  "source": "Open-Meteo (예보 16일 + 2015~2025 평년값)",
- "updatedAt": "2026-11-20T12:52+09:00",
+ "updatedAt": "2026-11-21T12:46+09:00",
  "months": [
   {
    "key": "2026-10",
@@ -419,17 +419,17 @@
     },
     {
      "day": 20,
-     "desc": "맑음",
-     "hi": -1,
-     "lo": -7,
+     "desc": "평년값",
+     "hi": 10,
+     "lo": -1,
      "pop": 0,
-     "historical": false
+     "historical": true
     },
     {
      "day": 21,
      "desc": "맑음",
      "hi": 0,
-     "lo": -9,
+     "lo": -8,
      "pop": 0,
      "historical": false
     },
@@ -437,72 +437,72 @@
      "day": 22,
      "desc": "약간 흐림",
      "hi": 3,
-     "lo": -11,
+     "lo": -10,
      "pop": 0,
      "historical": false
     },
     {
      "day": 23,
-     "desc": "소나기",
-     "hi": 6,
+     "desc": "비",
+     "hi": 8,
      "lo": -3,
-     "pop": 97,
+     "pop": 98,
      "historical": false
     },
     {
      "day": 24,
-     "desc": "강한 이슬비",
-     "hi": 6,
-     "lo": -6,
-     "pop": 75,
+     "desc": "대체로 맑음",
+     "hi": 4,
+     "lo": -5,
+     "pop": 65,
      "historical": false
     },
     {
      "day": 25,
-     "desc": "대체로 맑음",
-     "hi": 4,
-     "lo": -6,
-     "pop": 6,
+     "desc": "약한 이슬비",
+     "hi": 7,
+     "lo": -5,
+     "pop": 8,
      "historical": false
     },
     {
      "day": 26,
-     "desc": "대체로 맑음",
-     "hi": 12,
-     "lo": -1,
-     "pop": 28,
+     "desc": "약한 이슬비",
+     "hi": 14,
+     "lo": 1,
+     "pop": 41,
      "historical": false
     },
     {
      "day": 27,
      "desc": "약한 이슬비",
      "hi": 15,
-     "lo": 2,
-     "pop": 24,
+     "lo": 4,
+     "pop": 41,
      "historical": false
     },
     {
      "day": 28,
-     "desc": "약한 이슬비",
-     "hi": 10,
-     "lo": -3,
-     "pop": 34,
+     "desc": "맑음",
+     "hi": 9,
+     "lo": -1,
+     "pop": 24,
      "historical": false
     },
     {
      "day": 29,
      "desc": "흐림",
-     "hi": 7,
-     "lo": -4,
-     "pop": 17,
+     "hi": 13,
+     "lo": -2,
+     "pop": 8,
      "historical": false
     },
     {
      "day": 30,
-     "desc": "대체로 맑음",
-     "hi": 13,
-     "lo": 0,
-     "pop": 6,
+     "desc": "약한 이슬비",
+     "hi": 15,
+     "lo": 7,
+     "pop": 14,
      "historical": false
     }
    ]
